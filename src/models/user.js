@@ -25,10 +25,10 @@ const User = {
         localStorage.setItem('jwtToken', data)
         dispatch.User.setJwtToken(data)
         https.setJwt(data)
-        return data
+        return Promise.resolve(data)
       } catch(error) {
         console.error(error)
-        return null
+        return Promise.reject(error)
       }
     },
     async logout() {
@@ -36,9 +36,10 @@ const User = {
         localStorage.removeItem('jwtToken')
         dispatch.User.removeJwtToken()
         https.removeJwt()
+        return Promise.resolve()
       } catch(error) {
         console.error(error)
-        return null
+        return Promise.reject(error)
       }
     }
   })
