@@ -71,7 +71,7 @@ class Login extends Component {
       this.resetState()
     } catch(error) {
       this.resetState()
-      message.error('The username or password is incorrect')
+      message.error('Oops something went wrong')
     }
   }
 
