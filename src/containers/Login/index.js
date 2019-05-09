@@ -68,10 +68,10 @@ class Login extends Component {
         username,
         password
       })
-      this.resetState()
     } catch(error) {
-      this.resetState()
       message.error('Oops something went wrong')
+    } finally {
+      this.resetState()
     }
   }
 
