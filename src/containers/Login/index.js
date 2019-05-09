@@ -2,7 +2,15 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Row, Col, Input, Button, Typography, Icon } from 'antd'
+import {
+  Row,
+  Col,
+  Input,
+  Button,
+  Typography,
+  Icon,
+  message,
+} from 'antd'
 
 const { Title } = Typography;
 
@@ -27,33 +35,48 @@ const LoginDiv = styled.div`
 
 const MarginCol = styled(Col)`
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 class Login extends Component {
   state = {
     username: undefined,
-    password: undefined
+    password: undefined,
+    loading: false
   }
 
   onInputChange = (key, input) => {
     this.setState({ [key]: input.target.value })
   }
 
+  resetState = () => {
+    this.setState({
+      username: '',
+      password: '',
+      loading: false
+    })
+  }
+
   onLogin = async () => {
     try {
       const { username, password } = this.state
       const { login } = this.props
-      const result = await login({
+      await this.setState({ loading: true })
+      await login({
         username,
         password
       })
-      console.log('result', result)
+      this.resetState()
     } catch(error) {
-      console.error(error)
+      this.resetState()
+      message.error('The username or password is incorrect')
     }
   }
 
   render() {
+    const { username, password, loading } = this.state
     return (
       <BackgroundDiv>
         <LoginDiv>
@@ -63,10 +86,13 @@ class Login extends Component {
             </MarginCol>
             <MarginCol>
               <Input
+                autoFocus
                 placeholder="Username"
+                value={username}
                 prefix={
                   <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
                 }
+                disabled={loading}
                 required
                 onChange={data => this.onInputChange('username', data)}
               />
@@ -74,15 +100,27 @@ class Login extends Component {
             <MarginCol style={{ marginTop: 20 }}>
               <Input.Password
                 placeholder="Password"
+                value={password}
                 prefix={
                   <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
                 }
+                disabled={loading}
                 required
+                onPressEnter={this.onLogin}
                 onChange={data => this.onInputChange('password', data)}
               />
             </MarginCol>
             <MarginCol>
-              <Button type='primary' block onClick={this.onLogin}>Login</Button>
+              <Icon
+                type="loading"
+                spin
+                style={{ fontSize: 24, color: loading ? '#000' : '#fff' }}
+              />
+            </MarginCol>
+            <MarginCol>
+              <Button type='primary' block disabled={loading} onClick={this.onLogin}>
+                Login
+              </Button>
             </MarginCol>
           </Row>
         </LoginDiv>
