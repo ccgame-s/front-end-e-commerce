@@ -2,19 +2,19 @@ import https from '../services/https'
 
 const User = {
   state: {
-    jwtToken: null
+    userInfo: null
   },
   reducers: {
-    setJwtToken(state, payload) {
+    setUserInfo(state, payload) {
       return {
         ...state,
-        jwtToken: payload
+        userInfo: payload
       }
     },
-    removeJwtToken(state) {
+    removeUserInfo(state) {
       return {
         ...state,
-        jwtToken: null
+        userInfo: null
       }
     }
   },
@@ -22,9 +22,9 @@ const User = {
     async login(payload) {
       try {
         const { data } = await https.post('/login', payload)
-        localStorage.setItem('jwtToken', data)
-        dispatch.User.setJwtToken(data)
-        https.setJwt(data)
+        localStorage.setItem('jwtToken', data.jwtToken)
+        dispatch.User.setUserInfo(data)
+        https.setJwt(data.jwtToken)
         return Promise.resolve(data)
       } catch(error) {
         console.error(error)
@@ -34,7 +34,7 @@ const User = {
     async logout() {
       try {
         localStorage.removeItem('jwtToken')
-        dispatch.User.removeJwtToken()
+        dispatch.User.removeUserInfo()
         https.removeJwt()
         return Promise.resolve()
       } catch(error) {
