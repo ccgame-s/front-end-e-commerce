@@ -68,6 +68,7 @@ class Login extends Component {
         username,
         password
       })
+      window.location = '/'
     } catch(error) {
       message.error('Oops something went wrong')
     } finally {

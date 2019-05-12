@@ -21,7 +21,7 @@ class PrivateRoute extends React.Component {
       <Route
         {...rest}
         render={props => {
-          if (!userInfo)
+          if (!localStorage.getItem('jwtToken'))
             return (
               <Redirect
                 to={{
@@ -44,7 +44,7 @@ PrivateRoute.propTypes = {
 }
 
 const mapState = state => ({
-  userInfo: state.User.userInfo
+  userInfo: state.User
 })
 
 const mapDispatch = dispatch => ({
