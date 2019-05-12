@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
   Row,
@@ -127,6 +127,10 @@ class Login extends Component {
       </BackgroundDiv>
     )
   }
+}
+
+Login.propTypes = {
+  login: PropTypes.func
 }
 
 const mapState = state => ({
