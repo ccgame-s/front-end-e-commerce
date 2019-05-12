@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 class Logout extends Component {
   async componentWillMount() {
@@ -9,7 +10,9 @@ class Logout extends Component {
   }
 
   render() {
-    return <h1>This is Logout container</h1>
+    return (
+      <Redirect to='/login' />
+    )
   }
 }
 
