@@ -13,9 +13,25 @@ const Logo = styled.div`
   justify-content: center;
 `
 
+const menuItems = [
+  {
+    key: 'home',
+    icon: 'home',
+    label: 'Home',
+  },
+  {
+    key: 'logout',
+    icon: 'logout',
+    label: 'Logout',
+    link: '/logout'
+  }
+]
+
 class Home extends Component {
-  gotoLogout = () => {
-    window.location = '/logout'
+  gotoLink = link => {
+    if(link) {
+      window.location = link
+    }
   }
 
   render() {
@@ -23,15 +39,15 @@ class Home extends Component {
       <Layout style={{ minHeight: '100vh' }}>
         <Sider>
           <Logo>E-Commerce Admin</Logo>
-          <Menu theme='dark' defaultSelectedKeys={['1']}>
-            <Menu.Item key='1'>
-              <Icon type='home' />
-              <span>Home</span>
-            </Menu.Item>
-            <Menu.Item key='2' onClick={this.gotoLogout}>
-              <Icon type='logout' />
-              <span>Logout</span>
-            </Menu.Item>
+          <Menu theme='dark' defaultSelectedKeys={['home']}>
+            {
+              menuItems.map(item => (
+                <Menu.Item key={item.key} onClick={() => this.gotoLink(item.link)}>
+                  <Icon type={item.icon}/>
+                  <span>{item.label}</span>
+                </Menu.Item>
+              ))
+            }
           </Menu>
         </Sider>
         <Layout>
