@@ -65,8 +65,8 @@ class Login extends Component {
       const { login } = this.props
       await this.setState({ loading: true })
       await login({
-        username,
-        password
+        username: username.trim(),
+        password: password.trim()
       })
       window.location = '/'
     } catch(error) {
