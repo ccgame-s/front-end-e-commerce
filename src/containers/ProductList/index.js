@@ -1,8 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react'
-import { Table, Divider } from 'antd'
+import { Table, Divider, Popconfirm } from 'antd'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
+
+const ActionSpan = styled.span`
+  ${({ color }) => color && `color: ${color}`}
+  cursor: pointer;
+`
 
 class ProductList extends Component {
   columns = [
@@ -21,9 +27,14 @@ class ProductList extends Component {
       key: 'action',
       render: () => (
         <span>
-          <a onClick={this.onEdit}>Edit</a>
+          <ActionSpan color='#1890ff' onClick={this.onEdit}>Edit</ActionSpan>
           <Divider type="vertical" />
-          <a onClick={this.onDelete} style={{ color: 'red' }}>Delete</a>
+          <Popconfirm
+            title="Are you sure delete this product?"
+            onConfirm={this.onDelete}
+          >
+            <ActionSpan color='red'>Delete</ActionSpan>
+          </Popconfirm>
         </span>
       ),
     },
