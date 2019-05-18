@@ -1,4 +1,4 @@
-import https from '../services/https'
+import request from '../services/request'
 
 const User = {
   state: {
@@ -21,10 +21,10 @@ const User = {
   effects: dispatch => ({
     async login(payload) {
       try {
-        const { data } = await https.post('/login', payload)
+        const { data } = await request.post('/login', payload)
         localStorage.setItem('jwtToken', data.jwtToken)
         dispatch.User.setUserInfo(data)
-        https.setJwt(data.jwtToken)
+        request.setJwt(data.jwtToken)
         return Promise.resolve(data)
       } catch(error) {
         console.error(error)
@@ -35,7 +35,7 @@ const User = {
       try {
         localStorage.removeItem('jwtToken')
         dispatch.User.removeUserInfo()
-        https.removeJwt()
+        request.removeJwt()
         return Promise.resolve()
       } catch(error) {
         console.error(error)

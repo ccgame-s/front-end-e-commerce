@@ -1,4 +1,4 @@
-import https from '../services/https'
+import request from '../services/request'
 
 const Products = {
   state: {
@@ -21,7 +21,7 @@ const Products = {
   effects: dispatch => ({
     async fetchProducts(payload) {
       try {
-        const { data } = await https.get('/products')
+        const { data } = await request.get('/products')
         dispatch.Products.updateProducts(data)
         return Promise.resolve(data)
       } catch(error) {
@@ -31,7 +31,7 @@ const Products = {
     },
     async createProduct(payload) {
       try {
-        const { data } = await https.post('/products', payload)
+        const { data } = await request.post('/products', payload)
         return Promise.resolve(data)
       } catch(error) {
         console.error(error)
@@ -41,7 +41,7 @@ const Products = {
     async editProduct(payload) {
       try {
         const { id, ...rest } = payload
-        const { data } = await https.patch(`/products/${id}`, rest)
+        const { data } = await request.patch(`/products/${id}`, rest)
         return Promise.resolve(data)
       } catch(error) {
         console.error(error)
@@ -51,7 +51,7 @@ const Products = {
     async deleteProduct(payload) {
       try {
         const { id } = payload
-        const { data } = await https.delete(`/products/${id}`)
+        const { data } = await request.delete(`/products/${id}`)
         return Promise.resolve(data)
       } catch(error) {
         console.error(error)
