@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react'
-import { Table, Divider, Popconfirm } from 'antd'
+import { Table, Divider, Popconfirm, message } from 'antd'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
@@ -25,13 +25,15 @@ class ProductList extends Component {
     {
       title: 'Action',
       key: 'action',
-      render: () => (
+      render: (text, record) => (
         <span>
-          <ActionSpan color='#1890ff' onClick={this.onEdit}>Edit</ActionSpan>
+          <ActionSpan color='#1890ff' onClick={() => this.onEdit(record._id)}>
+            Edit
+          </ActionSpan>
           <Divider type="vertical" />
           <Popconfirm
             title="Are you sure delete this product?"
-            onConfirm={this.onDelete}
+            onConfirm={() => this.onDelete(record._id)}
           >
             <ActionSpan color='red'>Delete</ActionSpan>
           </Popconfirm>
@@ -45,12 +47,18 @@ class ProductList extends Component {
     fetchProducts()
   }
 
-  onEdit = () => {
+  onEdit = id => {
     alert('Edit')
   }
 
-  onDelete = () => {
-    alert('delete')
+  onDelete = async id => {
+    try {
+      const { deleteProduct } = this.props
+      await deleteProduct({ id })
+      message.success('Success')
+    } catch(error) {
+      message.error('Oops something went wrong')
+    }
   }
   
   render() {
@@ -63,7 +71,8 @@ class ProductList extends Component {
 
 ProductList.propTypes = {
   products: PropTypes.array,
-  fetchProducts: PropTypes.func
+  fetchProducts: PropTypes.func,
+  deleteProduct: PropTypes.func
 }
 
 const mapState = state => ({
@@ -71,7 +80,8 @@ const mapState = state => ({
 })
 
 const mapDispatch = dispatch => ({
-  fetchProducts: dispatch.Products.fetchProducts
+  fetchProducts: dispatch.Products.fetchProducts,
+  deleteProduct: dispatch.Products.deleteProduct
 })
 
 export default connect(mapState, mapDispatch)(ProductList)
